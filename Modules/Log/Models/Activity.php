@@ -57,6 +57,10 @@ class Activity extends SpatieActivity
      */
     public function getFormattedDescriptionAttribute(): string
     {
+        if (!$this->event) {
+            return 'Bilinmeyen işlem';
+        }
+
         $descriptions = [
             'created' => 'oluşturdu',
             'updated' => 'güncelledi',
@@ -66,6 +70,7 @@ class Activity extends SpatieActivity
             'logout' => 'çıkış yaptı',
             'profile_updated' => 'profil güncelledi',
             'password_changed' => 'şifre değiştirdi',
+            'unknown' => 'bilinmeyen işlem',
         ];
 
         return $descriptions[$this->event] ?? $this->event;
@@ -87,7 +92,11 @@ class Activity extends SpatieActivity
 
     public function getUserNameAttribute(): string
     {
-        return $this->causer ? $this->causer->name : 'Sistem';
+        if (!$this->causer) {
+            return 'Sistem';
+        }
+        
+        return $this->causer->name ?? 'Bilinmeyen Kullanıcı';
     }
 
     public function getIpAddressAttribute(): ?string
@@ -169,14 +178,15 @@ class Activity extends SpatieActivity
     public function getChangeSummaryAttribute(): string
     {
         if (!$this->has_changes) {
-            return $this->description;
+            return $this->description ?? 'Değişiklik yok';
         }
 
-        $changeCount = count($this->properties['changes'] ?? []);
-        $fields = array_keys($this->properties['changes'] ?? []);
+        $changes = $this->properties['changes'] ?? [];
+        $changeCount = count($changes);
+        $fields = array_keys($changes);
         
         if ($changeCount === 1) {
-            $fieldName = $this->properties['changes'][$fields[0]]['field_name'] ?? $fields[0];
+            $fieldName = $changes[$fields[0]]['field_name'] ?? $fields[0];
             return "{$fieldName} alanını değiştirdi";
         }
 
