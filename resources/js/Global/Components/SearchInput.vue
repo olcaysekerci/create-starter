@@ -6,12 +6,12 @@
             @input="$emit('update:modelValue', $event.target.value)"
             :placeholder="placeholder"
             :class="[
-                'pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-lg focus:outline-none focus:border-blue-500 transition-colors',
+                'pl-8 pr-4 py-1.5 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-lg focus:outline-none focus:border-blue-500 transition-colors',
                 size === 'sm' ? 'text-sm w-48' : size === 'lg' ? 'text-base w-80' : 'text-sm w-64'
             ]"
         >
-        <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
-            <component :is="icon" class="h-5 w-5 text-gray-400 dark:text-gray-500" />
+        <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+            <component :is="icon" class="h-4 w-4 text-gray-400 dark:text-gray-500" />
         </div>
         <div v-if="clearable && modelValue" 
              @click="$emit('update:modelValue', '')"
