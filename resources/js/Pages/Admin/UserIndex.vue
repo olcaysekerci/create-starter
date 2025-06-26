@@ -14,15 +14,6 @@
                     <p class="text-sm text-gray-500 mt-1">Tüm kullanıcıları görüntüle ve yönet</p>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <Button @click="showFilterModal = true" variant="secondary" :class="{ 'bg-blue-50 border-blue-200': hasActiveFilters }">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z"/>
-                        </svg>
-                        Filtrele
-                        <span v-if="hasActiveFilters" class="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-blue-100 bg-blue-600 rounded-full">
-                            {{ activeFilterCount }}
-                        </span>
-                    </Button>
                     <Button @click="showCreateModal = true" variant="primary">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -57,6 +48,14 @@
             />
         </div>
 
+        <!-- Filter Card -->
+        <FilterCard 
+            :filters="filters"
+            @update-filter="handleFilterUpdate"
+            @apply-filters="applyFilters"
+            @clear-filters="clearFilters"
+        />
+
         <!-- Users Table -->
         <div class="bg-white rounded-lg shadow">
             <div class="px-6 py-4 border-b border-gray-200">
@@ -68,6 +67,13 @@
                             v-model="searchQuery"
                             placeholder="Kullanıcı ara..."
                             clearable
+                        />
+                        <!-- Excel Export -->
+                        <ExcelExportButton
+                            :data="filteredUsers"
+                            :columns="tableColumns"
+                            filename="kullanicilar"
+                            @export-complete="handleExportComplete"
                         />
                     </div>
                 </div>
@@ -88,63 +94,7 @@
             </div>
         </Modal>
 
-        <!-- Filter Modal -->
-        <Modal :show="showFilterModal" @close="showFilterModal = false" max-width="lg">
-            <div class="p-6">
-                <h3 class="text-lg font-medium mb-4">Filtrele</h3>
-                
-                <div class="space-y-4">
-                    <!-- Status Filter -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Durum</label>
-                        <select v-model="filters.status" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">Tümü</option>
-                            <option value="active">Aktif</option>
-                            <option value="pending">Bekleyen</option>
-                        </select>
-                    </div>
 
-                    <!-- Date Range Filter -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Kayıt Tarihi</label>
-                        <div class="grid grid-cols-2 gap-3">
-                            <input
-                                type="date"
-                                v-model="filters.dateFrom"
-                                class="border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Başlangıç"
-                            >
-                            <input
-                                type="date"
-                                v-model="filters.dateTo"
-                                class="border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Bitiş"
-                            >
-                        </div>
-                    </div>
-
-                    <!-- Email Domain Filter -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">E-posta Domain</label>
-                        <input
-                            type="text"
-                            v-model="filters.emailDomain"
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Örn: gmail.com"
-                        >
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-end space-x-3 mt-6">
-                    <Button variant="secondary" @click="clearFilters">
-                        Temizle
-                    </Button>
-                    <Button variant="primary" @click="applyFilters">
-                        Filtrele
-                    </Button>
-                </div>
-            </div>
-        </Modal>
     </AdminLayout>
 </template>
 
@@ -158,13 +108,14 @@ import Button from '@/Global/Components/Button.vue'
 import Modal from '@/Global/Components/Modal.vue'
 import SearchInput from '@/Global/Components/SearchInput.vue'
 import StatCard from '@/Global/Components/StatCard.vue'
+import FilterCard from '@/Global/Components/FilterCard.vue'
+import ExcelExportButton from '@/Global/Components/ExcelExportButton.vue'
 
 const props = defineProps({
     users: Array
 })
 
 const showCreateModal = ref(false)
-const showFilterModal = ref(false)
 const searchQuery = ref('')
 
 // Filter states
@@ -175,12 +126,12 @@ const filters = ref({
     emailDomain: ''
 })
 
-const appliedFilters = ref({
-    status: '',
-    dateFrom: '',
-    dateTo: '',
-    emailDomain: ''
-})
+// Table columns for Excel export
+const tableColumns = [
+    { key: 'name', title: 'İsim' },
+    { key: 'email', title: 'E-posta' },
+    { key: 'created_at', title: 'Kayıt Tarihi', type: 'date' }
+]
 
 // Icons
 const userIcon = {
@@ -223,38 +174,29 @@ const filteredUsers = computed(() => {
     }
 
     // Status filter
-    if (appliedFilters.value.status) {
-        if (appliedFilters.value.status === 'active') {
+    if (filters.value.status) {
+        if (filters.value.status === 'active') {
             result = result.filter(user => user.email_verified_at !== null)
-        } else if (appliedFilters.value.status === 'pending') {
+        } else if (filters.value.status === 'pending') {
             result = result.filter(user => user.email_verified_at === null)
         }
     }
 
     // Date range filter
-    if (appliedFilters.value.dateFrom) {
-        result = result.filter(user => new Date(user.created_at) >= new Date(appliedFilters.value.dateFrom))
+    if (filters.value.dateFrom) {
+        result = result.filter(user => new Date(user.created_at) >= new Date(filters.value.dateFrom))
     }
 
-    if (appliedFilters.value.dateTo) {
-        result = result.filter(user => new Date(user.created_at) <= new Date(appliedFilters.value.dateTo))
+    if (filters.value.dateTo) {
+        result = result.filter(user => new Date(user.created_at) <= new Date(filters.value.dateTo))
     }
 
     // Email domain filter
-    if (appliedFilters.value.emailDomain) {
-        result = result.filter(user => user.email.toLowerCase().includes(appliedFilters.value.emailDomain.toLowerCase()))
+    if (filters.value.emailDomain) {
+        result = result.filter(user => user.email.toLowerCase().includes(filters.value.emailDomain.toLowerCase()))
     }
 
     return result
-})
-
-// Filter indicators
-const hasActiveFilters = computed(() => {
-    return Object.values(appliedFilters.value).some(value => value !== '')
-})
-
-const activeFilterCount = computed(() => {
-    return Object.values(appliedFilters.value).filter(value => value !== '').length
 })
 
 // Methods
@@ -264,9 +206,13 @@ const handleUserCreated = () => {
     router.reload({ only: ['users'] })
 }
 
+const handleFilterUpdate = ({ key, value }) => {
+    filters.value[key] = value
+}
+
 const applyFilters = () => {
-    appliedFilters.value = { ...filters.value }
-    showFilterModal.value = false
+    // Filtreler artık real-time çalışıyor, bu metod boş kalabilir
+    console.log('Filters applied:', filters.value)
 }
 
 const clearFilters = () => {
@@ -276,13 +222,10 @@ const clearFilters = () => {
         dateTo: '',
         emailDomain: ''
     }
-    appliedFilters.value = {
-        status: '',
-        dateFrom: '',
-        dateTo: '',
-        emailDomain: ''
-    }
-    showFilterModal.value = false
+}
+
+const handleExportComplete = (filename) => {
+    console.log('Excel export completed:', filename)
 }
 
 const handleEditUser = (user) => {
