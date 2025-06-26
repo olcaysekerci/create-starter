@@ -51,27 +51,31 @@
             </template>
         </PageHeader>
 
-        <!-- Stats Cards -->
-        <div v-if="showStatsModal" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <StatCard
+        <!-- Stats Items -->
+        <div v-if="showStatsModal" class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+            <StatItem
                 title="Toplam Kullanıcı"
                 :value="users.length"
                 color="blue"
                 :icon="UserIcon"
             />
             
-            <StatCard
+            <StatItem
                 title="Aktif Kullanıcı"
                 :value="activeUsersCount"
-                color="green"
+                color="emerald"
                 :icon="CheckIcon"
+                change="+12%"
+                changeType="increase"
             />
             
-            <StatCard
+            <StatItem
                 title="Bekleyen Onay"
                 :value="pendingUsersCount"
-                color="yellow"
+                color="orange"
                 :icon="WarningIcon"
+                change="-3%"
+                changeType="decrease"
             />
         </div>
 
@@ -136,7 +140,7 @@ import CreateUserForm from '../../../../Modules/User/Resources/Views/Admin/Compo
 import Button from '@/Global/Components/Button.vue'
 import Modal from '@/Global/Components/Modal.vue'
 import SearchInput from '@/Global/Components/SearchInput.vue'
-import StatCard from '@/Global/Components/StatCard.vue'
+import StatItem from '@/Global/Components/StatItem.vue'
 import FilterCard from '@/Global/Components/FilterCard.vue'
 import ExcelExportButton from '@/Global/Components/ExcelExportButton.vue'
 import PageHeader from '@/Global/Components/PageHeader.vue'
