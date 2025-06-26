@@ -10,7 +10,7 @@
         <!-- Page Header -->
         <PageHeader 
             title="Kullanıcı Yönetimi"
-            description="Sistemdeki kullanıcıları görüntüleyin, düzenleyin ve yönetin. Kullanıcı bilgilerini güncelleyebilir, yeni kullanıcılar ekleyebilir ve mevcut kullanıcıları silebilirsiniz."
+            description="Kullanıcı hesaplarını görüntüleyin, düzenleyin ve yönetin. Yeni kullanıcı ekleyebilir, mevcut kullanıcıları güncelleyebilirsiniz."
         >
             <template #actions>
                 <Button 

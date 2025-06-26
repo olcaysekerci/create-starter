@@ -31,7 +31,7 @@
                             <select 
                                 :value="filters.status" 
                                 @input="updateFilter('status', $event.target.value)"
-                                class="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                class="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:outline-none focus:border-blue-500 text-sm"
                             >
                                 <option value="">Tümü</option>
                                 <option value="active">Aktif</option>
@@ -46,7 +46,7 @@
                                 type="date"
                                 :value="filters.dateFrom"
                                 @input="updateFilter('dateFrom', $event.target.value)"
-                                class="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                class="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:outline-none focus:border-blue-500 text-sm"
                             >
                         </div>
 
@@ -57,7 +57,7 @@
                                 type="date"
                                 :value="filters.dateTo"
                                 @input="updateFilter('dateTo', $event.target.value)"
-                                class="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                class="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:outline-none focus:border-blue-500 text-sm"
                             >
                         </div>
 
@@ -68,7 +68,7 @@
                                 type="text"
                                 :value="filters.emailDomain"
                                 @input="updateFilter('emailDomain', $event.target.value)"
-                                class="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                class="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:outline-none focus:border-blue-500 text-sm"
                                 placeholder="Örn: gmail.com"
                             >
                         </div>
