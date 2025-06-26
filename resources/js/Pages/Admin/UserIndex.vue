@@ -6,23 +6,29 @@
             { title: 'Kullanıcı Yönetimi' }
         ]"
     >
-        <!-- Header Section -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                <div class="mb-4 sm:mb-0">
-                    <h1 class="text-2xl font-bold text-gray-900">Kullanıcılar</h1>
-                    <p class="text-sm text-gray-500 mt-1">Tüm kullanıcıları görüntüle ve yönet</p>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <Button @click="showCreateModal = true" variant="primary">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                        </svg>
-                        Yeni Kullanıcı
-                    </Button>
-                </div>
-            </div>
-        </div>
+        <!-- Page Header -->
+        <PageHeader 
+            title="Kullanıcılar" 
+            description="Tüm kullanıcıları görüntüle ve yönet"
+        >
+            <template #actions>
+                <Button @click="showFilterModal = !showFilterModal" variant="secondary" :class="{ 'bg-blue-50 border-blue-200': hasActiveFilters }">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z"/>
+                    </svg>
+                    Filtrele
+                    <span v-if="activeFilterCount > 0" class="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-blue-100 bg-blue-600 rounded-full">
+                        {{ activeFilterCount }}
+                    </span>
+                </Button>
+                <Button @click="showCreateModal = true" variant="primary">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    Yeni Kullanıcı
+                </Button>
+            </template>
+        </PageHeader>
 
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -50,10 +56,12 @@
 
         <!-- Filter Card -->
         <FilterCard 
+            :show="showFilterModal"
             :filters="filters"
             @update-filter="handleFilterUpdate"
             @apply-filters="applyFilters"
             @clear-filters="clearFilters"
+            @close="showFilterModal = false"
         />
 
         <!-- Users Table -->
@@ -110,12 +118,14 @@ import SearchInput from '@/Global/Components/SearchInput.vue'
 import StatCard from '@/Global/Components/StatCard.vue'
 import FilterCard from '@/Global/Components/FilterCard.vue'
 import ExcelExportButton from '@/Global/Components/ExcelExportButton.vue'
+import PageHeader from '@/Global/Components/PageHeader.vue'
 
 const props = defineProps({
     users: Array
 })
 
 const showCreateModal = ref(false)
+const showFilterModal = ref(false)
 const searchQuery = ref('')
 
 // Filter states
@@ -197,6 +207,15 @@ const filteredUsers = computed(() => {
     }
 
     return result
+})
+
+// Filter indicators
+const hasActiveFilters = computed(() => {
+    return Object.values(filters.value).some(value => value !== '')
+})
+
+const activeFilterCount = computed(() => {
+    return Object.values(filters.value).filter(value => value !== '').length
 })
 
 // Methods

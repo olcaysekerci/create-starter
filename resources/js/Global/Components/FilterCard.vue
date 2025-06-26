@@ -1,10 +1,7 @@
 <template>
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+    <div v-if="show" class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
         <div class="px-6 py-4 border-b border-gray-200">
-            <button 
-                @click="isExpanded = !isExpanded"
-                class="flex items-center justify-between w-full text-left"
-            >
+            <div class="flex items-center justify-between w-full">
                 <div class="flex items-center">
                     <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z"/>
@@ -14,26 +11,18 @@
                         {{ activeFilterCount }}
                     </span>
                 </div>
-                <svg 
-                    :class="['w-5 h-5 text-gray-400 transition-transform', { 'rotate-180': isExpanded }]" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
+                <button 
+                    @click="$emit('close')"
+                    class="text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                </svg>
-            </button>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
         </div>
         
-        <transition 
-            enter-active-class="transition-all duration-300 ease-out"
-            enter-from-class="opacity-0 max-h-0"
-            enter-to-class="opacity-100 max-h-96"
-            leave-active-class="transition-all duration-300 ease-in"
-            leave-from-class="opacity-100 max-h-96"
-            leave-to-class="opacity-0 max-h-0"
-        >
-            <div v-show="isExpanded" class="overflow-hidden">
+        <div class="overflow-hidden">
                 <div class="px-6 py-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <!-- Status Filter -->
@@ -101,7 +90,6 @@
                     </div>
                 </div>
             </div>
-        </transition>
     </div>
 </template>
 
@@ -113,12 +101,14 @@ const props = defineProps({
     filters: {
         type: Object,
         required: true
+    },
+    show: {
+        type: Boolean,
+        default: false
     }
 })
 
-const emit = defineEmits(['update-filter', 'apply-filters', 'clear-filters'])
-
-const isExpanded = ref(false)
+const emit = defineEmits(['update-filter', 'apply-filters', 'clear-filters', 'close'])
 
 const activeFilterCount = computed(() => {
     return Object.values(props.filters).filter(value => value !== '').length
