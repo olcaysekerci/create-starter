@@ -4,6 +4,7 @@ namespace Modules\User\Services;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -17,7 +18,7 @@ class UserService
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => Hash::make($data['password']),
         ]);
     }
 
@@ -38,14 +39,14 @@ class UserService
             'email' => $data['email'],
         ];
 
-        // Only update password if provided
+        // Şifre güncellemesi sadece dolu gelirse yapılır
         if (!empty($data['password'])) {
-            $updateData['password'] = bcrypt($data['password']);
+            $updateData['password'] = Hash::make($data['password']);
         }
 
         $user->update($updateData);
 
-        return $user;
+        return $user->fresh();
     }
 
     public function deleteUser(User $user): bool

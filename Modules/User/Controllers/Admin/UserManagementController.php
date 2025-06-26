@@ -4,6 +4,7 @@ namespace Modules\User\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Modules\User\Requests\Admin\CreateUserRequest;
+use Modules\User\Requests\Admin\UpdateUserRequest;
 use Modules\User\Services\UserService;
 use App\Models\User;
 use Inertia\Inertia;
@@ -38,11 +39,11 @@ class UserManagementController extends Controller
         ]);
     }
 
-    public function update(CreateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         $this->userService->updateUser($user, $request->validated());
 
-        return redirect()->route('admin.users.index')
+        return redirect()->back()
                         ->with('success', 'Kullanıcı başarıyla güncellendi.');
     }
 

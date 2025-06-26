@@ -11,7 +11,6 @@
 import DataTable from '@/Global/Components/DataTable.vue'
 import EditIcon from '@/Global/Icons/EditIcon.vue'
 import TrashIcon from '@/Global/Icons/TrashIcon.vue'
-import { router } from '@inertiajs/vue3'
 
 const props = defineProps({
     users: Array
@@ -44,11 +43,8 @@ const actions = [
         icon: EditIcon,
         handler: (user) => {
             console.log('Edit button clicked for user:', user)
-            console.log('Navigating to:', `/admin/users/${user.id}/edit`)
-            // Emit event to parent or navigate to edit page
+            // Emit event to parent component
             emit('edit-user', user)
-            // Navigate directly:
-            router.visit(`/admin/users/${user.id}/edit`)
         }
     },
     {
@@ -58,21 +54,8 @@ const actions = [
         icon: TrashIcon,
         handler: (user) => {
             console.log('Delete button clicked for user:', user)
-            // Confirm before delete
-            if (confirm(`${user.name} kullanıcısını silmek istediğinize emin misiniz?`)) {
-                console.log('Deleting user:', `/admin/users/${user.id}`)
-                emit('delete-user', user)
-                // Delete directly:
-                router.delete(`/admin/users/${user.id}`, {
-                    onSuccess: () => {
-                        console.log(`${user.name} kullanıcısı başarıyla silindi`)
-                    },
-                    onError: (errors) => {
-                        console.error('Kullanıcı silinirken hata oluştu:', errors)
-                        alert('Kullanıcı silinirken bir hata oluştu. Lütfen tekrar deneyin.')
-                    }
-                })
-            }
+            // Emit event to parent component to handle the modal
+            emit('delete-user', user)
         }
     }
 ]

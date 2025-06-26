@@ -88,6 +88,9 @@
             @close="showFilterModal = false"
         />
 
+        <!-- Flash Messages -->
+        <FlashMessage />
+
         <!-- Users Table -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
@@ -126,6 +129,40 @@
             </div>
         </Modal>
 
+        <!-- Delete Confirmation Modal -->
+        <DeleteConfirmationModal
+            :show="showDeleteModal"
+            :title="`${userToDelete?.name || 'Kullanıcı'} Silinecek`"
+            :message="`${userToDelete?.name || 'Bu kullanıcı'} kalıcı olarak silinecek. Bu işlem geri alınamaz.`"
+            confirm-text="Evet, Sil"
+            cancel-text="İptal"
+            :processing="deleteProcessing"
+            @close="handleDeleteModalClose"
+            @confirm="confirmDeleteUser"
+        >
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <div class="flex items-center space-x-3">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            {{ userToDelete?.name }}
+                        </p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">
+                            {{ userToDelete?.email }}
+                        </p>
+                        <p class="text-xs text-gray-400 dark:text-gray-500">
+                            Kayıt: {{ userToDelete?.created_at ? new Date(userToDelete.created_at).toLocaleDateString('tr-TR') : '' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </DeleteConfirmationModal>
 
     </AdminLayout>
 </template>
@@ -146,6 +183,8 @@ import PageHeader from '@/Global/Components/PageHeader.vue'
 import UserIcon from '@/Global/Icons/UserIcon.vue'
 import CheckIcon from '@/Global/Icons/CheckIcon.vue'
 import WarningIcon from '@/Global/Icons/WarningIcon.vue'
+import DeleteConfirmationModal from '@/Global/Components/DeleteConfirmationModal.vue'
+import FlashMessage from '@/Global/Components/FlashMessage.vue'
 
 const props = defineProps({
     users: Array
@@ -154,6 +193,9 @@ const props = defineProps({
 const showCreateModal = ref(false)
 const showFilterModal = ref(false)
 const showStatsModal = ref(false) // Default olarak kapalı
+const showDeleteModal = ref(false)
+const userToDelete = ref(null)
+const deleteProcessing = ref(false)
 const searchQuery = ref('')
 
 // Filter states
@@ -266,15 +308,36 @@ const handleEditUser = (user) => {
 
 const handleDeleteUser = (user) => {
     console.log('handleDeleteUser called:', user)
+    userToDelete.value = user
+    showDeleteModal.value = true
+}
+
+const handleDeleteModalClose = () => {
+    if (!deleteProcessing.value) {
+        showDeleteModal.value = false
+        userToDelete.value = null
+    }
+}
+
+const confirmDeleteUser = () => {
+    if (!userToDelete.value) return
+    
+    deleteProcessing.value = true
+    
     // Delete user via Inertia
-    router.delete(`/admin/users/${user.id}`, {
-        onSuccess: () => {
+    router.delete(`/admin/users/${userToDelete.value.id}`, {
+        onSuccess: (page) => {
             // User will be automatically removed from the list
-            console.log(`${user.name} kullanıcısı başarıyla silindi`)
+            console.log(`${userToDelete.value.name} kullanıcısı başarıyla silindi`)
+            showDeleteModal.value = false
+            userToDelete.value = null
+            deleteProcessing.value = false
+            // Flash message will be shown automatically from backend
         },
         onError: (errors) => {
             console.error('Kullanıcı silinirken hata oluştu:', errors)
-            alert('Kullanıcı silinirken bir hata oluştu. Lütfen tekrar deneyin.')
+            deleteProcessing.value = false
+            // Modal açık kalır, kullanıcı tekrar deneyebilir
         }
     })
 }

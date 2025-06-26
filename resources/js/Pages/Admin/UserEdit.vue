@@ -13,6 +13,9 @@
             :description="`${user.name} kullanıcısının bilgilerini güncelleyin`"
         />
 
+        <!-- Flash Messages -->
+        <FlashMessage />
+
         <!-- User Edit Form -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
@@ -149,6 +152,7 @@ import PageHeader from '@/Global/Components/PageHeader.vue'
 import TextInput from '@/Global/Forms/TextInput.vue'
 import FormGroup from '@/Global/Forms/FormGroup.vue'
 import Button from '@/Global/Components/Button.vue'
+import FlashMessage from '@/Global/Components/FlashMessage.vue'
 
 const props = defineProps({
     user: Object
