@@ -12,17 +12,17 @@
         <!-- Sidebar -->
         <div 
             :class="[
-                'bg-white shadow-lg transition-all duration-300 ease-in-out flex flex-col relative z-50 border-r border-gray-200',
+                'bg-white dark:bg-gray-900 shadow-lg transition-all duration-300 ease-in-out flex flex-col relative z-50 border-r border-gray-200 dark:border-gray-700',
                 sidebarCollapsed ? (isMobile ? '-translate-x-full lg:translate-x-0 lg:w-16' : 'w-16') : 'w-56',
                 isMobile ? 'fixed h-full' : 'relative'
             ]"
         >
             <!-- Logo Area -->
-            <div class="flex items-center justify-center h-16 border-b border-gray-200">
-                <div v-if="!sidebarCollapsed || isMobile" class="text-lg font-bold text-gray-800">
+            <div class="flex items-center justify-center h-16 border-b border-gray-200 dark:border-gray-700">
+                <div v-if="!sidebarCollapsed || isMobile" class="text-lg font-bold text-gray-800 dark:text-gray-200">
                     Admin Panel
                 </div>
-                <div v-else class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <div v-else class="w-8 h-8 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
                     </svg>
@@ -34,10 +34,10 @@
                 <!-- Dashboard -->
                 <Link 
                     :href="route('admin.dashboard')" 
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg hover:bg-gray-50 text-gray-700 hover:text-gray-900 transition-colors group"
+                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors group"
                     :class="{ 'justify-center': sidebarCollapsed && !isMobile }"
                 >
-                    <svg class="w-5 h-5 text-gray-500 group-hover:text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
                     </svg>
                     <span v-if="!sidebarCollapsed || isMobile" class="ml-3">Dashboard</span>
@@ -46,10 +46,10 @@
                 <!-- Users -->
                 <Link 
                     :href="route('admin.users.index')" 
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg hover:bg-gray-50 text-gray-700 hover:text-gray-900 transition-colors group"
+                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors group"
                     :class="{ 'justify-center': sidebarCollapsed && !isMobile }"
                 >
-                    <svg class="w-5 h-5 text-gray-500 group-hover:text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
                     </svg>
                     <span v-if="!sidebarCollapsed || isMobile" class="ml-3">Kullanıcılar</span>
@@ -58,10 +58,10 @@
                 <!-- Settings -->
                 <Link 
                     href="/admin/settings" 
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg hover:bg-gray-50 text-gray-700 hover:text-gray-900 transition-colors group"
+                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors group"
                     :class="{ 'justify-center': sidebarCollapsed && !isMobile }"
                 >
-                    <svg class="w-5 h-5 text-gray-500 group-hover:text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
                     </svg>
                     <span v-if="!sidebarCollapsed || isMobile" class="ml-3">Ayarlar</span>
@@ -70,17 +70,17 @@
         </div>
 
         <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col min-w-0">
+        <div class="flex-1 flex flex-col min-w-0 bg-gray-50 dark:bg-gray-900">
             <!-- Top Navbar -->
-            <header class="bg-white shadow-sm border-b border-gray-200 h-16 flex items-center justify-between px-4 lg:px-6">
+            <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 h-16 flex items-center justify-between px-4 lg:px-6">
                 <!-- Left side -->
                 <div class="flex items-center space-x-4">
                     <!-- Toggle Button -->
                     <button
                         @click="toggleSidebar"
-                        class="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
-                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
@@ -91,11 +91,14 @@
 
                 <!-- Right side -->
                 <div class="flex items-center space-x-3">
+                    <!-- Dark Mode Toggle -->
+                    <DarkModeToggle />
+                    
                     <!-- Quick Actions -->
                     <div class="relative" @click.stop>
                         <button 
                             @click="showNotifications = false; showUserMenu = false; showQuickActions = !showQuickActions"
-                            class="p-1.5 rounded-md hover:bg-gray-100 transition-colors border border-gray-200"
+                            class="p-2 rounded-md hover:bg-gray-100 transition-colors border border-gray-200"
                         >
                             <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -157,7 +160,7 @@
                     <div class="relative" @click.stop>
                         <button 
                             @click="showQuickActions = false; showUserMenu = false; showNotifications = !showNotifications"
-                            class="relative p-1.5 rounded-md hover:bg-gray-100 transition-colors border border-gray-200"
+                            class="relative p-2 rounded-md hover:bg-gray-100 transition-colors border border-gray-200"
                         >
                             <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
@@ -220,31 +223,20 @@
                     <div class="relative" @click.stop>
                         <button 
                             @click="showQuickActions = false; showNotifications = false; showUserMenu = !showUserMenu"
-                            class="flex items-center space-x-2 p-1.5 rounded-md hover:bg-gray-100 transition-colors border border-gray-200"
+                            class="flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-gray-100 transition-colors border border-gray-200"
                         >
-                            <div class="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center">
-                                <span class="text-xs font-medium text-gray-600">{{ userInitials }}</span>
-                            </div>
-                            <div v-if="isReady" class="hidden sm:block text-left">
-                                <p class="text-xs font-medium text-gray-900">{{ pageProps.auth.user.name }}</p>
-                                <p class="text-xs text-gray-500">Admin</p>
-                            </div>
-                            <svg class="w-3 h-3 text-gray-400 transition-transform" :class="{ 'rotate-180': showUserMenu }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                             </svg>
+                            <span class="text-xs font-medium text-gray-600 hidden sm:block">Kullanıcı</span>
                         </button>
                         
                         <!-- User Dropdown Menu -->
                         <div v-if="showUserMenu" class="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
                             <div v-if="isReady" class="p-4 border-b border-gray-100">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-                                        <span class="text-xs font-medium text-gray-600">{{ userInitials }}</span>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-900">{{ pageProps.auth.user.name }}</p>
-                                        <p class="text-xs text-gray-500">{{ pageProps.auth.user.email }}</p>
-                                    </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">{{ pageProps.auth.user.name }}</p>
+                                    <p class="text-xs text-gray-500">{{ pageProps.auth.user.email }}</p>
                                 </div>
                             </div>
                             <div class="py-2">
@@ -307,6 +299,7 @@
 import { Head, Link, usePage } from '@inertiajs/vue3'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import Breadcrumb from '@/Global/Components/Breadcrumb.vue'
+import DarkModeToggle from '@/Global/Components/DarkModeToggle.vue'
 
 const props = defineProps({
     title: String,
