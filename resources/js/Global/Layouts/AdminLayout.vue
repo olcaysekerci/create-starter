@@ -55,6 +55,18 @@
                     <span v-if="!sidebarCollapsed || isMobile" class="ml-3">Kullanıcılar</span>
                 </Link>
 
+                <!-- Activity Logs -->
+                <Link 
+                    :href="route('admin.logs.index')" 
+                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors group"
+                    :class="{ 'justify-center': sidebarCollapsed && !isMobile }"
+                >
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <span v-if="!sidebarCollapsed || isMobile" class="ml-3">Aktivite Logları</span>
+                </Link>
+
                 <!-- Settings -->
                 <Link 
                     href="/admin/settings" 

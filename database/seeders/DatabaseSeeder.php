@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         // User modülü seeder'ını çalıştır
         $this->call([
             UserSeeder::class,
+            \Modules\Log\Seeders\ActivityLogSeeder::class,
         ]);
     }
 }
