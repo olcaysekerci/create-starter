@@ -1,6 +1,7 @@
 <template>
     <Button 
         variant="secondary" 
+        size="sm"
         @click="exportToExcel"
         :disabled="loading || !data || data.length === 0"
         :class="{ 'opacity-50 cursor-not-allowed': loading }"

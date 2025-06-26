@@ -1,22 +1,22 @@
 <template>
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead class="bg-gray-50 dark:bg-gray-700">
                 <tr>
                     <th v-for="column in columns" 
                         :key="column.key"
                         scope="col" 
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         {{ column.title }}
                     </th>
-                    <th v-if="hasActions" scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th v-if="hasActions" scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         İşlemler
                     </th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 <tr v-if="!data || data.length === 0">
-                    <td :colspan="columns.length + (hasActions ? 1 : 0)" class="px-6 py-4 text-center text-sm text-gray-500">
+                    <td :colspan="columns.length + (hasActions ? 1 : 0)" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
                         {{ emptyMessage }}
                     </td>
                 </tr>
@@ -24,7 +24,7 @@
                     <td v-for="column in columns" 
                         :key="column.key"
                         class="px-6 py-4 whitespace-nowrap text-sm"
-                        :class="column.cellClass || (column.type === 'primary' ? 'font-medium text-gray-900' : 'text-gray-500')">
+                        :class="column.cellClass || (column.type === 'primary' ? 'font-medium text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400')">
                         
                         <!-- Custom slot content -->
                         <slot v-if="$slots[`cell-${column.key}`]" 
@@ -128,10 +128,10 @@ const getBadgeClass = (value, badgeColors = {}) => {
 
 const getActionClass = (variant = 'primary') => {
     const variants = {
-        primary: 'text-indigo-600 hover:text-indigo-900',
-        danger: 'text-red-600 hover:text-red-900',
-        warning: 'text-yellow-600 hover:text-yellow-900',
-        success: 'text-green-600 hover:text-green-900'
+        primary: 'text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300',
+        danger: 'text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300',
+        warning: 'text-yellow-600 dark:text-yellow-400 hover:text-yellow-900 dark:hover:text-yellow-300',
+        success: 'text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300'
     }
     return variants[variant] || variants.primary
 }

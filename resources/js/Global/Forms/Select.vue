@@ -6,8 +6,8 @@
             :disabled="disabled"
             :required="required"
             :class="[
-                'block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white',
-                disabled ? 'bg-gray-100 cursor-not-allowed' : '',
+                'block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100',
+                disabled ? 'bg-gray-100 dark:bg-gray-600 cursor-not-allowed' : '',
                 error ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : '',
                 size === 'sm' ? 'px-2 py-1 text-sm' : size === 'lg' ? 'px-4 py-3 text-lg' : ''
             ]"
@@ -28,7 +28,7 @@
         
         <!-- Custom arrow -->
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
         </div>

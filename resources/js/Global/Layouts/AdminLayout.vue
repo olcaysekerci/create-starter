@@ -106,9 +106,9 @@
                         </button>
                         
                         <!-- Quick Actions Dropdown -->
-                        <div v-if="showQuickActions" class="absolute right-0 mt-2 w-60 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
-                            <div class="p-3 border-b border-gray-200">
-                                <h3 class="text-sm font-semibold text-gray-900">Hızlı İşlemler</h3>
+                        <div v-if="showQuickActions" class="absolute right-0 mt-2 w-60 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                            <div class="p-3 border-b border-gray-200 dark:border-gray-700">
+                                <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Hızlı İşlemler</h3>
                             </div>
                             <div class="p-3">
                                 <div class="grid grid-cols-2 gap-2">
@@ -121,7 +121,7 @@
                                                 <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             </svg>
                                         </div>
-                                        <span class="text-xs font-medium text-gray-900">Kullanıcılar</span>
+                                        <span class="text-xs font-medium text-gray-900 dark:text-gray-100">Kullanıcılar</span>
                                     </Link>
                                     
                                     <button class="flex flex-col items-center p-3 rounded-lg border border-gray-200 hover:border-green-300 hover:bg-green-50 transition-colors group">
@@ -130,7 +130,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                                             </svg>
                                         </div>
-                                        <span class="text-xs font-medium text-gray-900">Yeni Ekle</span>
+                                        <span class="text-xs font-medium text-gray-900 dark:text-gray-100">Yeni Ekle</span>
                                     </button>
                                     
                                     <button class="flex flex-col items-center p-3 rounded-lg border border-gray-200 hover:border-yellow-300 hover:bg-yellow-50 transition-colors group">
@@ -139,7 +139,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                                             </svg>
                                         </div>
-                                        <span class="text-xs font-medium text-gray-900">Raporlar</span>
+                                        <span class="text-xs font-medium text-gray-900 dark:text-gray-100">Raporlar</span>
                                     </button>
                                     
                                     <button class="flex flex-col items-center p-3 rounded-lg border border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition-colors group">
@@ -149,7 +149,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             </svg>
                                         </div>
-                                        <span class="text-xs font-medium text-gray-900">Ayarlar</span>
+                                        <span class="text-xs font-medium text-gray-900 dark:text-gray-100">Ayarlar</span>
                                     </button>
                                 </div>
                             </div>
@@ -169,34 +169,34 @@
                         </button>
                         
                         <!-- Notifications Dropdown -->
-                        <div v-if="showNotifications" class="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
-                            <div class="p-4 border-b border-gray-200">
+                        <div v-if="showNotifications" class="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
                                 <div class="flex items-center justify-between">
-                                    <h3 class="text-sm font-semibold text-gray-900">Bildirimler</h3>
+                                    <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Bildirimler</h3>
                                     <span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">3 yeni</span>
                                 </div>
                             </div>
                             <div class="max-h-64 overflow-y-auto">
-                                <div class="p-4 hover:bg-gray-50 border-b border-gray-100 flex items-start space-x-3">
+                                <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 flex items-start space-x-3">
                                     <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                                         <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                         </svg>
                                     </div>
                                     <div class="flex-1">
-                                        <p class="text-sm font-medium text-gray-900">Yeni kullanıcı kaydı</p>
-                                        <p class="text-xs text-gray-500">ahmet@example.com - 5 dakika önce</p>
+                                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">Yeni kullanıcı kaydı</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">ahmet@example.com - 5 dakika önce</p>
                                     </div>
                                 </div>
-                                <div class="p-4 hover:bg-gray-50 border-b border-gray-100 flex items-start space-x-3">
+                                <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 flex items-start space-x-3">
                                     <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                                         <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1z"/>
                                         </svg>
                                     </div>
                                     <div class="flex-1">
-                                        <p class="text-sm font-medium text-gray-900">Sistem güncellemesi</p>
-                                        <p class="text-xs text-gray-500">v2.1.0 başarıyla yüklendi - 1 saat önce</p>
+                                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">Sistem güncellemesi</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">v2.1.0 başarıyla yüklendi - 1 saat önce</p>
                                     </div>
                                 </div>
                                 <div class="p-4 hover:bg-gray-50 flex items-start space-x-3">

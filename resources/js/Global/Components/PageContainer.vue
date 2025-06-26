@@ -12,7 +12,7 @@
             maxWidth === 'full' ? 'max-w-none' : 'max-w-7xl'
         ]">
             <div v-if="card" :class="[
-                'bg-white overflow-hidden shadow-xl sm:rounded-lg',
+                'bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg border border-gray-200 dark:border-gray-700',
                 cardPadding ? 'p-6' : ''
             ]">
                 <slot />

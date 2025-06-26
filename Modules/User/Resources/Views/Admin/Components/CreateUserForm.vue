@@ -44,12 +44,14 @@
             <Button 
                 type="button" 
                 variant="secondary"
+                size="sm"
                 @click="$emit('cancel')"
             >
                 İptal
             </Button>
             <Button 
                 type="submit"
+                size="sm"
                 :disabled="form.processing"
                 :class="{ 'opacity-25': form.processing }"
             >

@@ -2,10 +2,10 @@
     <section>
         <header v-if="title || description || $slots.header">
             <slot name="header">
-                <h2 v-if="title" class="text-lg font-medium text-gray-900">
+                <h2 v-if="title" class="text-lg font-medium text-gray-900 dark:text-gray-100">
                     {{ title }}
                 </h2>
-                <p v-if="description" class="mt-1 text-sm text-gray-600">
+                <p v-if="description" class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     {{ description }}
                 </p>
             </slot>
@@ -22,6 +22,7 @@
                     <Button 
                         v-if="submitText"
                         type="submit"
+                        size="sm"
                         :variant="submitVariant"
                         :disabled="isProcessing"
                         :class="{ 'opacity-25': isProcessing }"
@@ -32,6 +33,7 @@
                     <Button
                         v-if="cancelText"
                         type="button"
+                        size="sm"
                         variant="secondary"
                         @click="$emit('cancel')"
                     >
@@ -45,7 +47,7 @@
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p v-if="showSuccess" class="text-sm text-green-600">
+                    <p v-if="showSuccess" class="text-sm text-green-600 dark:text-green-400">
                         {{ successMessage }}
                     </p>
                 </Transition>
