@@ -3,7 +3,8 @@
         title="Kullanıcı Düzenle" 
         page-title="Kullanıcı Düzenle"
         :breadcrumbs="[
-            { title: 'Kullanıcı Yönetimi', href: route('admin.users.index') },
+            { title: 'Dashboard', url: '/admin' },
+            { title: 'Kullanıcı Yönetimi', url: route('admin.users.index') },
             { title: 'Kullanıcı Düzenle' }
         ]"
     >
@@ -20,36 +21,42 @@
             >
                 <div class="grid grid-cols-6 gap-6">
                     <div class="col-span-6 sm:col-span-4">
-                        <TextInput
-                            id="name"
-                            v-model="form.name"
-                            type="text"
-                            label="İsim"
-                            :error="form.errors.name"
-                            class="mt-1 block w-full"
-                        />
+                        <FormGroup label="İsim" :required="true" :error="form.errors.name">
+                            <TextInput
+                                id="name"
+                                v-model="form.name"
+                                type="text"
+                                placeholder="Kullanıcının tam adını girin"
+                                clearable
+                            />
+                        </FormGroup>
                     </div>
 
                     <div class="col-span-6 sm:col-span-4">
-                        <TextInput
-                            id="email"
-                            v-model="form.email"
-                            type="email"
-                            label="E-posta"
-                            :error="form.errors.email"
-                            class="mt-1 block w-full"
-                        />
+                        <FormGroup label="E-posta" :required="true" :error="form.errors.email">
+                            <TextInput
+                                id="email"
+                                v-model="form.email"
+                                type="email"
+                                placeholder="ornek@email.com"
+                                clearable
+                            />
+                        </FormGroup>
                     </div>
 
                     <div class="col-span-6 sm:col-span-4">
-                        <TextInput
-                            id="password"
-                            v-model="form.password"
-                            type="password"
-                            label="Şifre (Değiştirmek için doldurun)"
+                        <FormGroup 
+                            label="Şifre" 
                             :error="form.errors.password"
-                            class="mt-1 block w-full"
-                        />
+                            help-text="Değiştirmek istemiyorsanız boş bırakın"
+                        >
+                            <TextInput
+                                id="password"
+                                v-model="form.password"
+                                type="password"
+                                placeholder="Yeni şifre (opsiyonel)"
+                            />
+                        </FormGroup>
                     </div>
                 </div>
             </FormSection>
@@ -63,6 +70,7 @@ import AdminLayout from '@/Global/Layouts/AdminLayout.vue'
 import PageContainer from '@/Global/Components/PageContainer.vue'
 import FormSection from '@/Global/Components/FormSection.vue'
 import TextInput from '@/Global/Forms/TextInput.vue'
+import FormGroup from '@/Global/Forms/FormGroup.vue'
 
 const props = defineProps({
     user: Object

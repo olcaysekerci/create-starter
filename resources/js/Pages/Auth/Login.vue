@@ -1,10 +1,9 @@
 <script setup>
 import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import TextInput from '@/Global/Forms/TextInput.vue';
+import FormGroup from '@/Global/Forms/FormGroup.vue';
+import Button from '@/Global/Components/Button.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 defineProps({
@@ -37,37 +36,28 @@ const submit = () => {
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
-
+        <form @submit.prevent="submit" class="space-y-6">
+            <FormGroup label="Email" :required="true" :error="form.errors.email">
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
                     v-model="form.email"
-                    required
+                    placeholder="your@email.com"
+                    clearable
                     autofocus
                     autocomplete="username"
                 />
+            </FormGroup>
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
+            <FormGroup label="Password" :required="true" :error="form.errors.password">
                 <TextInput
                     id="password"
                     type="password"
-                    class="mt-1 block w-full"
                     v-model="form.password"
-                    required
+                    placeholder="Enter your password"
                     autocomplete="current-password"
                 />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+            </FormGroup>
 
             <div class="mt-4 block">
                 <label class="flex items-center">
@@ -87,13 +77,14 @@ const submit = () => {
                     Forgot your password?
                 </Link>
 
-                <PrimaryButton
+                <Button
+                    type="submit"
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
                     Log in
-                </PrimaryButton>
+                </Button>
             </div>
         </form>
     </GuestLayout>

@@ -1,8 +1,7 @@
 <script setup>
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import TextInput from '@/Global/Forms/TextInput.vue';
+import FormGroup from '@/Global/Forms/FormGroup.vue';
+import Button from '@/Global/Components/Button.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
 defineProps({
@@ -38,36 +37,28 @@ const form = useForm({
             @submit.prevent="form.patch(route('profile.update'))"
             class="mt-6 space-y-6"
         >
-            <div>
-                <InputLabel for="name" value="Name" />
-
+            <FormGroup label="Name" :required="true" :error="form.errors.name">
                 <TextInput
                     id="name"
                     type="text"
-                    class="mt-1 block w-full"
                     v-model="form.name"
-                    required
+                    placeholder="Enter your full name"
+                    clearable
                     autofocus
                     autocomplete="name"
                 />
+            </FormGroup>
 
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div>
-
-            <div>
-                <InputLabel for="email" value="Email" />
-
+            <FormGroup label="Email" :required="true" :error="form.errors.email">
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
                     v-model="form.email"
-                    required
+                    placeholder="your@email.com"
+                    clearable
                     autocomplete="username"
                 />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+            </FormGroup>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="mt-2 text-sm text-gray-800">
@@ -91,7 +82,7 @@ const form = useForm({
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <Button type="submit" :disabled="form.processing">Save</Button>
 
                 <Transition
                     enter-active-class="transition ease-in-out"

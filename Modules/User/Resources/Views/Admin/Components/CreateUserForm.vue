@@ -1,37 +1,43 @@
 <template>
     <form @submit.prevent="submit">
-        <div class="space-y-4">
-            <TextInput
-                id="name"
-                v-model="form.name"
-                type="text"
-                label="İsim"
-                :error="form.errors.name"
-            />
+        <div class="space-y-6">
+            <FormGroup label="İsim" :required="true" :error="form.errors.name">
+                <TextInput
+                    id="name"
+                    v-model="form.name"
+                    type="text"
+                    placeholder="Kullanıcının tam adını girin"
+                    clearable
+                />
+            </FormGroup>
 
-            <TextInput
-                id="email"
-                v-model="form.email"
-                type="email"
-                label="E-posta"
-                :error="form.errors.email"
-            />
+            <FormGroup label="E-posta" :required="true" :error="form.errors.email">
+                <TextInput
+                    id="email"
+                    v-model="form.email"
+                    type="email"
+                    placeholder="ornek@email.com"
+                    clearable
+                />
+            </FormGroup>
 
-            <TextInput
-                id="password"
-                v-model="form.password"
-                type="password"
-                label="Şifre"
-                :error="form.errors.password"
-            />
+            <FormGroup label="Şifre" :required="true" :error="form.errors.password">
+                <TextInput
+                    id="password"
+                    v-model="form.password"
+                    type="password"
+                    placeholder="En az 8 karakter"
+                />
+            </FormGroup>
 
-            <TextInput
-                id="password_confirmation"
-                v-model="form.password_confirmation"
-                type="password"
-                label="Şifre Tekrar"
-                :error="form.errors.password_confirmation"
-            />
+            <FormGroup label="Şifre Tekrar" :required="true" :error="form.errors.password_confirmation">
+                <TextInput
+                    id="password_confirmation"
+                    v-model="form.password_confirmation"
+                    type="password"
+                    placeholder="Şifreyi tekrar girin"
+                />
+            </FormGroup>
         </div>
 
         <div class="flex items-center justify-end mt-6 space-x-3">
@@ -56,6 +62,7 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3'
 import TextInput from '@/Global/Forms/TextInput.vue'
+import FormGroup from '@/Global/Forms/FormGroup.vue'
 import Button from '@/Global/Components/Button.vue'
 
 const emit = defineEmits(['created', 'cancel'])

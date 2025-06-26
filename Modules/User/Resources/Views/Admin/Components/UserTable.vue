@@ -9,6 +9,8 @@
 
 <script setup>
 import DataTable from '@/Global/Components/DataTable.vue'
+import EditIcon from '@/Global/Icons/EditIcon.vue'
+import TrashIcon from '@/Global/Icons/TrashIcon.vue'
 import { router } from '@inertiajs/vue3'
 
 const props = defineProps({
@@ -39,6 +41,7 @@ const actions = [
         key: 'edit',
         label: 'Düzenle',
         variant: 'primary',
+        icon: EditIcon,
         handler: (user) => {
             console.log('Edit button clicked for user:', user)
             console.log('Navigating to:', `/admin/users/${user.id}/edit`)
@@ -52,6 +55,7 @@ const actions = [
         key: 'delete',
         label: 'Sil',
         variant: 'danger',
+        icon: TrashIcon,
         handler: (user) => {
             console.log('Delete button clicked for user:', user)
             // Confirm before delete

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="relative">
         <label v-if="label" :for="id" class="block text-sm font-medium text-gray-700">
             {{ label }}
         </label>
@@ -7,29 +7,83 @@
             :id="id"
             :type="type"
             :value="modelValue"
-            @input="$emit('update:modelValue', $event.target.value)"
-            :class="[
-                'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500',
-                error ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : ''
-            ]"
             :placeholder="placeholder"
+            :disabled="disabled"
+            :required="required"
+            :class="[
+                'block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-colors',
+                disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white',
+                error ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : '',
+                size === 'sm' ? 'px-2 py-1 text-sm' : size === 'lg' ? 'px-4 py-3 text-lg' : ''
+            ]"
+            @input="$emit('update:modelValue', $event.target.value)"
+            @blur="$emit('blur', $event)"
+            @focus="$emit('focus', $event)"
         />
-        <p v-if="error" class="mt-1 text-sm text-red-600">{{ error }}</p>
+        
+        <!-- Icon -->
+        <div v-if="$slots.icon" class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <slot name="icon" />
+        </div>
+        
+        <!-- Clear button -->
+        <button
+            v-if="clearable && modelValue"
+            type="button"
+            @click="$emit('update:modelValue', '')"
+            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+        >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
     </div>
+    <p v-if="error" class="mt-1 text-sm text-red-600">{{ error }}</p>
 </template>
 
 <script setup>
-defineProps({
-    id: String,
+import { computed } from 'vue'
+
+const props = defineProps({
+    modelValue: {
+        type: [String, Number],
+        default: ''
+    },
     type: {
         type: String,
         default: 'text'
     },
-    modelValue: [String, Number],
-    label: String,
-    placeholder: String,
-    error: String
+    placeholder: {
+        type: String,
+        default: ''
+    },
+    disabled: {
+        type: Boolean,
+        default: false
+    },
+    required: {
+        type: Boolean,
+        default: false
+    },
+    error: {
+        type: Boolean,
+        default: false
+    },
+    clearable: {
+        type: Boolean,
+        default: false
+    },
+    size: {
+        type: String,
+        default: 'md',
+        validator: (value) => ['sm', 'md', 'lg'].includes(value)
+    },
+    id: {
+        type: String,
+        default: () => `input-${Math.random().toString(36).substr(2, 9)}`
+    },
+    label: String
 })
 
-defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue', 'blur', 'focus'])
 </script> 

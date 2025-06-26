@@ -1,9 +1,8 @@
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import TextInput from '@/Global/Forms/TextInput.vue';
+import FormGroup from '@/Global/Forms/FormGroup.vue';
+import Button from '@/Global/Components/Button.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
@@ -24,73 +23,49 @@ const submit = () => {
     <GuestLayout>
         <Head title="Register" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
-
+        <form @submit.prevent="submit" class="space-y-6">
+            <FormGroup label="Name" :required="true" :error="form.errors.name">
                 <TextInput
                     id="name"
                     type="text"
-                    class="mt-1 block w-full"
                     v-model="form.name"
-                    required
+                    placeholder="Enter your full name"
+                    clearable
                     autofocus
                     autocomplete="name"
                 />
+            </FormGroup>
 
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
-
+            <FormGroup label="Email" :required="true" :error="form.errors.email">
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
                     v-model="form.email"
-                    required
+                    placeholder="your@email.com"
+                    clearable
                     autocomplete="username"
                 />
+            </FormGroup>
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
+            <FormGroup label="Password" :required="true" :error="form.errors.password">
                 <TextInput
                     id="password"
                     type="password"
-                    class="mt-1 block w-full"
                     v-model="form.password"
-                    required
+                    placeholder="Enter a strong password"
                     autocomplete="new-password"
                 />
+            </FormGroup>
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
-
+            <FormGroup label="Confirm Password" :required="true" :error="form.errors.password_confirmation">
                 <TextInput
                     id="password_confirmation"
                     type="password"
-                    class="mt-1 block w-full"
                     v-model="form.password_confirmation"
-                    required
+                    placeholder="Confirm your password"
                     autocomplete="new-password"
                 />
-
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.password_confirmation"
-                />
-            </div>
+            </FormGroup>
 
             <div class="mt-4 flex items-center justify-end">
                 <Link
@@ -100,13 +75,14 @@ const submit = () => {
                     Already registered?
                 </Link>
 
-                <PrimaryButton
+                <Button
+                    type="submit"
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
                     Register
-                </PrimaryButton>
+                </Button>
             </div>
         </form>
     </GuestLayout>
