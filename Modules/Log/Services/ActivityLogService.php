@@ -141,4 +141,44 @@ class ActivityLogService
             ->withProperties($properties)
             ->log($event);
     }
+
+    public function getActivitiesForExport(Request $request): Collection
+    {
+        $query = Activity::with('causer', 'subject')
+            ->latest();
+
+        // Aynı filtreleri uygula
+        if ($request->filled('user_id')) {
+            $query->byUser($request->user_id);
+        }
+
+        if ($request->filled('model_type')) {
+            $query->byModel($request->model_type);
+        }
+
+        if ($request->filled('event')) {
+            $query->byEvent($request->event);
+        }
+
+        if ($request->filled('date_from')) {
+            $query->where('created_at', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $query->where('created_at', '<=', $request->date_to . ' 23:59:59');
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('description', 'like', "%{$search}%")
+                  ->orWhereHas('causer', function ($q) use ($search) {
+                      $q->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Export için limit koy (performans için)
+        return $query->limit(5000)->get();
+    }
 } 
