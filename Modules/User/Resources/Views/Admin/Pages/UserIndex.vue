@@ -1,5 +1,11 @@
 <template>
-    <AdminLayout title="Kullanıcı Yönetimi" page-title="Kullanıcı Yönetimi">
+    <AdminLayout 
+        title="Kullanıcı Yönetimi" 
+        page-title="Kullanıcı Yönetimi"
+        :breadcrumbs="[
+            { title: 'Kullanıcı Yönetimi' }
+        ]"
+    >
         <!-- Header Section -->
         <div class="flex justify-between items-center mb-6">
             <div>

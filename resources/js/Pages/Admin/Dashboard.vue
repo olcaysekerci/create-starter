@@ -1,5 +1,11 @@
 <template>
-    <AdminLayout title="Dashboard" page-title="Dashboard">
+    <AdminLayout 
+        title="Dashboard" 
+        page-title="Dashboard"
+        :breadcrumbs="[
+            { title: 'Dashboard' }
+        ]"
+    >
         <!-- Welcome Section -->
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900">Hoş Geldiniz! 👋</h1>
