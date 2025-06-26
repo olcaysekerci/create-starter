@@ -30,4 +30,26 @@ class UserService
 
         return $user;
     }
+
+    public function updateUser(User $user, array $data): User
+    {
+        $updateData = [
+            'name' => $data['name'],
+            'email' => $data['email'],
+        ];
+
+        // Only update password if provided
+        if (!empty($data['password'])) {
+            $updateData['password'] = bcrypt($data['password']);
+        }
+
+        $user->update($updateData);
+
+        return $user;
+    }
+
+    public function deleteUser(User $user): bool
+    {
+        return $user->delete();
+    }
 } 

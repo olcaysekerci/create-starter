@@ -4,22 +4,12 @@
         :columns="columns"
         :actions="actions"
         empty-message="Henüz kullanıcı bulunmuyor"
-    >
-        <template #cell-email_verified_at="{ item }">
-            <span :class="[
-                'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-                item.email_verified_at ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-            ]">
-                {{ item.email_verified_at ? 'Aktif' : 'Bekleyen' }}
-            </span>
-        </template>
-    </DataTable>
+    />
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { router } from '@inertiajs/vue3'
 import DataTable from '@/Global/Components/DataTable.vue'
+import { router } from '@inertiajs/vue3'
 
 const props = defineProps({
     users: Array
@@ -38,11 +28,6 @@ const columns = [
         title: 'E-posta'
     },
     {
-        key: 'email_verified_at',
-        title: 'Durum',
-        type: 'custom'
-    },
-    {
         key: 'created_at',
         title: 'Kayıt Tarihi',
         type: 'date'
@@ -55,7 +40,12 @@ const actions = [
         label: 'Düzenle',
         variant: 'primary',
         handler: (user) => {
-            editUser(user)
+            console.log('Edit button clicked for user:', user)
+            console.log('Navigating to:', `/admin/users/${user.id}/edit`)
+            // Emit event to parent or navigate to edit page
+            emit('edit-user', user)
+            // Navigate directly:
+            router.visit(`/admin/users/${user.id}/edit`)
         }
     },
     {
@@ -63,30 +53,23 @@ const actions = [
         label: 'Sil',
         variant: 'danger',
         handler: (user) => {
-            deleteUser(user)
+            console.log('Delete button clicked for user:', user)
+            // Confirm before delete
+            if (confirm(`${user.name} kullanıcısını silmek istediğinize emin misiniz?`)) {
+                console.log('Deleting user:', `/admin/users/${user.id}`)
+                emit('delete-user', user)
+                // Delete directly:
+                router.delete(`/admin/users/${user.id}`, {
+                    onSuccess: () => {
+                        console.log(`${user.name} kullanıcısı başarıyla silindi`)
+                    },
+                    onError: (errors) => {
+                        console.error('Kullanıcı silinirken hata oluştu:', errors)
+                        alert('Kullanıcı silinirken bir hata oluştu. Lütfen tekrar deneyin.')
+                    }
+                })
+            }
         }
     }
 ]
-
-// Action handlers
-const editUser = (user) => {
-    // Kullanıcı düzenleme sayfasına yönlendir
-    router.visit(`/admin/users/${user.id}/edit`)
-}
-
-const deleteUser = (user) => {
-    if (confirm(`${user.name} kullanıcısını silmek istediğinizden emin misiniz?`)) {
-        router.delete(`/admin/users/${user.id}`, {
-            onSuccess: () => {
-                // Başarı mesajı gösterilebilir
-                alert('Kullanıcı başarıyla silindi')
-            },
-            onError: (errors) => {
-                // Hata mesajı gösterilebilir
-                alert('Kullanıcı silinirken bir hata oluştu')
-                console.error(errors)
-            }
-        })
-    }
-}
 </script> 
