@@ -324,11 +324,12 @@ const confirmDeleteUser = () => {
     
     deleteProcessing.value = true
     
-    // Delete user via Inertia
+    // Delete user via Inertia with preserveState: false to ensure flash messages are received
     router.delete(`/admin/users/${userToDelete.value.id}`, {
+        preserveState: false,
+        preserveScroll: true,
         onSuccess: (page) => {
             // User will be automatically removed from the list
-            console.log(`${userToDelete.value.name} kullanıcısı başarıyla silindi`)
             showDeleteModal.value = false
             userToDelete.value = null
             deleteProcessing.value = false
