@@ -1,5 +1,12 @@
 <template>
-    <form @submit.prevent="submit">
+    <FormSection 
+        title="Profil Bilgileri"
+        description="Hesap bilgilerinizi güncelleyin"
+        submit-text="Güncelle"
+        :is-processing="form.processing"
+        :show-success="form.recentlySuccessful"
+        @submit="submit"
+    >
         <div class="grid grid-cols-6 gap-6">
             <div class="col-span-6 sm:col-span-4">
                 <TextInput
@@ -23,23 +30,14 @@
                 />
             </div>
         </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <Button 
-                type="submit"
-                :class="{ 'opacity-25': form.processing }" 
-                :disabled="form.processing"
-            >
-                Güncelle
-            </Button>
-        </div>
-    </form>
+    </FormSection>
 </template>
 
 <script setup>
 import { useForm } from '@inertiajs/vue3'
 import TextInput from '@/Global/Forms/TextInput.vue'
 import Button from '@/Global/Components/Button.vue'
+import FormSection from '@/Global/Components/FormSection.vue'
 
 const props = defineProps({
     user: Object

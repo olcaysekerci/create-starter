@@ -12,67 +12,52 @@
             <p class="text-gray-600 mt-2">Admin panel ana sayfasına hoş geldiniz. İşte sistemin genel durumu:</p>
         </div>
 
+        <!-- System Alert -->
+        <div class="mb-6">
+            <Alert 
+                variant="success" 
+                title="Sistem Güncellendi"
+                message="v2.1.0 başarıyla yüklendi ve tüm özellikler aktif."
+                :auto-close="10"
+            />
+        </div>
+
         <!-- Quick Stats -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                <div class="flex items-center">
-                    <div class="p-3 bg-blue-100 rounded-lg">
-                        <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
-                        </svg>
-                    </div>
-                    <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium text-gray-600">Toplam Kullanıcı</p>
-                        <p class="text-2xl font-bold text-gray-900">1,234</p>
-                        <p class="text-xs text-green-500 mt-1">↗ %12 artış</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                <div class="flex items-center">
-                    <div class="p-3 bg-green-100 rounded-lg">
-                        <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
-                        </svg>
-                    </div>
-                    <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium text-gray-600">Aktif Oturumlar</p>
-                        <p class="text-2xl font-bold text-gray-900">348</p>
-                        <p class="text-xs text-green-500 mt-1">↗ %8 artış</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                <div class="flex items-center">
-                    <div class="p-3 bg-yellow-100 rounded-lg">
-                        <svg class="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                        </svg>
-                    </div>
-                    <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium text-gray-600">Bekleyen İşlemler</p>
-                        <p class="text-2xl font-bold text-gray-900">23</p>
-                        <p class="text-xs text-red-500 mt-1">↗ %3 artış</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                <div class="flex items-center">
-                    <div class="p-3 bg-purple-100 rounded-lg">
-                        <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
-                        </svg>
-                    </div>
-                    <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium text-gray-600">Sistem Durumu</p>
-                        <p class="text-2xl font-bold text-green-600">Çevrimiçi</p>
-                        <p class="text-xs text-gray-500 mt-1">Son kontrol: 2dk önce</p>
-                    </div>
-                </div>
-            </div>
+            <StatCard
+                title="Toplam Kullanıcı"
+                :value="1234"
+                color="blue"
+                change="%12 artış"
+                change-type="increase"
+                :icon="userIcon"
+            />
+            
+            <StatCard
+                title="Aktif Oturumlar"
+                :value="348"
+                color="green"
+                change="%8 artış"
+                change-type="increase"
+                :icon="refreshIcon"
+            />
+            
+            <StatCard
+                title="Bekleyen İşlemler"
+                :value="23"
+                color="yellow"
+                change="%3 artış"
+                change-type="increase"
+                :icon="warningIcon"
+            />
+            
+            <StatCard
+                title="Sistem Durumu"
+                value="Çevrimiçi"
+                color="purple"
+                change="Son kontrol: 2dk önce"
+                :icon="serverIcon"
+            />
         </div>
 
         <!-- Quick Actions & Recent Activity -->
@@ -195,5 +180,32 @@
 
 <script setup>
 import AdminLayout from '@/Global/Layouts/AdminLayout.vue'
+import StatCard from '@/Global/Components/StatCard.vue'
+import Alert from '@/Global/Components/Alert.vue'
 import { Link } from '@inertiajs/vue3'
+
+// Icons
+const userIcon = {
+    template: `<svg fill="currentColor" viewBox="0 0 20 20">
+        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+    </svg>`
+}
+
+const refreshIcon = {
+    template: `<svg fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
+    </svg>`
+}
+
+const warningIcon = {
+    template: `<svg fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+    </svg>`
+}
+
+const serverIcon = {
+    template: `<svg fill="currentColor" viewBox="0 0 20 20">
+        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+    </svg>`
+}
 </script> 

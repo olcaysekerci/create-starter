@@ -1,49 +1,92 @@
 <template>
-    <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        İsim
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        E-posta
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Kayıt Tarihi
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        İşlemler
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                <tr v-for="user in users" :key="user.id">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {{ user.name }}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {{ user.email }}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {{ new Date(user.created_at).toLocaleDateString('tr-TR') }}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button class="text-indigo-600 hover:text-indigo-900 mr-4">
-                            Düzenle
-                        </button>
-                        <button class="text-red-600 hover:text-red-900">
-                            Sil
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <DataTable
+        :data="users"
+        :columns="columns"
+        :actions="actions"
+        empty-message="Henüz kullanıcı bulunmuyor"
+    >
+        <template #cell-email_verified_at="{ item }">
+            <span :class="[
+                'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+                item.email_verified_at ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+            ]">
+                {{ item.email_verified_at ? 'Aktif' : 'Bekleyen' }}
+            </span>
+        </template>
+    </DataTable>
 </template>
 
 <script setup>
-defineProps({
+import { ref } from 'vue'
+import { router } from '@inertiajs/vue3'
+import DataTable from '@/Global/Components/DataTable.vue'
+
+const props = defineProps({
     users: Array
 })
+
+const emit = defineEmits(['edit-user', 'delete-user'])
+
+const columns = [
+    {
+        key: 'name',
+        title: 'İsim',
+        type: 'primary'
+    },
+    {
+        key: 'email',
+        title: 'E-posta'
+    },
+    {
+        key: 'email_verified_at',
+        title: 'Durum',
+        type: 'custom'
+    },
+    {
+        key: 'created_at',
+        title: 'Kayıt Tarihi',
+        type: 'date'
+    }
+]
+
+const actions = [
+    {
+        key: 'edit',
+        label: 'Düzenle',
+        variant: 'primary',
+        handler: (user) => {
+            editUser(user)
+        }
+    },
+    {
+        key: 'delete',
+        label: 'Sil',
+        variant: 'danger',
+        handler: (user) => {
+            deleteUser(user)
+        }
+    }
+]
+
+// Action handlers
+const editUser = (user) => {
+    // Kullanıcı düzenleme sayfasına yönlendir
+    router.visit(`/admin/users/${user.id}/edit`)
+}
+
+const deleteUser = (user) => {
+    if (confirm(`${user.name} kullanıcısını silmek istediğinizden emin misiniz?`)) {
+        router.delete(`/admin/users/${user.id}`, {
+            onSuccess: () => {
+                // Başarı mesajı gösterilebilir
+                alert('Kullanıcı başarıyla silindi')
+            },
+            onError: (errors) => {
+                // Hata mesajı gösterilebilir
+                alert('Kullanıcı silinirken bir hata oluştu')
+                console.error(errors)
+            }
+        })
+    }
+}
 </script> 
