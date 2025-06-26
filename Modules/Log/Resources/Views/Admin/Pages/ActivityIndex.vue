@@ -227,75 +227,164 @@
         </div>
 
         <!-- Activity Detail Modal -->
-        <Modal v-model="showDetailModal" title="Aktivite Detayları" size="lg">
-            <div v-if="selectedActivity" class="space-y-4">
-                <!-- Temel Bilgiler -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">ID</label>
-                        <p class="text-sm text-gray-900 dark:text-white font-mono">#{{ selectedActivity.id }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tarih</label>
-                        <p class="text-sm text-gray-900 dark:text-white">
-                            {{ formatDate(selectedActivity.created_at) }} {{ formatTime(selectedActivity.created_at) }}
-                        </p>
-                    </div>
+        <Modal :show="showDetailModal" @close="showDetailModal = false">
+            <div v-if="selectedActivity" class="p-6">
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                        Aktivite Detayları
+                    </h3>
+                    <button @click="showDetailModal = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
                 </div>
 
-                <!-- Kullanıcı ve İşlem -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kullanıcı</label>
-                        <p class="text-sm text-gray-900 dark:text-white">{{ selectedActivity.user_name }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">İşlem</label>
-                        <div class="flex items-center space-x-2">
-                            <span v-if="selectedActivity.event" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
-                                  :class="getEventBadgeClass(selectedActivity.event)">
-                                {{ selectedActivity.formatted_description }}
-                            </span>
+                <!-- Content -->
+                <div class="space-y-4 max-h-96 overflow-y-auto">
+                    <!-- Ana Bilgiler -->
+                    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-sm font-medium text-gray-600 dark:text-gray-400">#{{ selectedActivity.id }}</span>
+                                <span class="inline-flex items-center px-2 py-1 rounded text-sm font-medium"
+                                      :class="getEventBadgeClass(selectedActivity.event)">
+                                    {{ selectedActivity.formatted_description }}
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span v-if="selectedActivity.is_admin_action" 
+                                      class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400">
+                                    Admin
+                                </span>
+                                <span v-if="selectedActivity.is_password_change" 
+                                      class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400">
+                                    🔒 Şifre
+                                </span>
+                                <span v-if="selectedActivity.is_email_change" 
+                                      class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400">
+                                    📧 Email
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-600 dark:text-gray-400">Kullanıcı:</span>
+                                <span class="text-gray-900 dark:text-white font-medium ml-2">{{ selectedActivity.user_name }}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600 dark:text-gray-400">Tarih:</span>
+                                <span class="text-gray-900 dark:text-white ml-2">{{ formatDate(selectedActivity.created_at) }} {{ formatTime(selectedActivity.created_at) }}</span>
+                            </div>
+                        </div>
+
+                        <div v-if="selectedActivity.subject_type" class="grid grid-cols-2 gap-4 text-sm mt-2">
+                            <div>
+                                <span class="text-gray-600 dark:text-gray-400">Kaynak:</span>
+                                <span class="text-gray-900 dark:text-white ml-2">{{ selectedActivity.model_name }}</span>
+                            </div>
+                            <div v-if="selectedActivity.subject_id">
+                                <span class="text-gray-600 dark:text-gray-400">ID:</span>
+                                <span class="text-gray-900 dark:text-white font-mono ml-2">{{ selectedActivity.subject_id }}</span>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Açıklama -->
+                    <div class="border-l-4 border-blue-400 pl-8">
+                        <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-1">Açıklama</h4>
+                        <p class="text-sm text-gray-700 dark:text-gray-300">{{ selectedActivity.description }}</p>
+                    </div>
+
+                    <!-- Değişiklikler -->
+                    <div v-if="selectedActivity.has_changes && selectedActivity.formatted_changes.length > 0">
+                        <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-3 flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                            </svg>
+                            Değişiklikler
+                        </h4>
+                        <div class="space-y-3">
+                            <div v-for="change in selectedActivity.formatted_changes" :key="change.field" 
+                                 class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-sm font-medium text-gray-900 dark:text-white">{{ change.field_name }}</span>
+                                    <span v-if="change.is_important" 
+                                          class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400">
+                                        Önemli
+                                    </span>
+                                </div>
+                                <div class="flex items-center space-x-3 text-xs">
+                                    <div class="flex-1">
+                                        <div class="text-gray-500 dark:text-gray-400 mb-1">Önceki</div>
+                                        <div class="bg-red-50 dark:bg-red-900/10 text-red-700 dark:text-red-400 px-2 py-1 rounded font-mono">
+                                            {{ change.old_value }}
+                                        </div>
+                                    </div>
+                                    <div class="text-gray-400">→</div>
+                                    <div class="flex-1">
+                                        <div class="text-gray-500 dark:text-gray-400 mb-1">Yeni</div>
+                                        <div class="bg-green-50 dark:bg-green-900/10 text-green-700 dark:text-green-400 px-2 py-1 rounded font-mono">
+                                            {{ change.new_value }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Silinen Kayıt Bilgileri -->
+                    <div v-if="selectedActivity.deleted_info" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-red-800 dark:text-red-400 mb-3 flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                            Silinen Kayıt
+                        </h4>
+                        <div class="grid grid-cols-2 gap-3 text-sm">
+                            <div>
+                                <span class="text-red-700 dark:text-red-400">Ad:</span>
+                                <span class="text-red-900 dark:text-red-300 font-medium ml-2">{{ selectedActivity.deleted_info.name }}</span>
+                            </div>
+                            <div>
+                                <span class="text-red-700 dark:text-red-400">E-posta:</span>
+                                <span class="text-red-900 dark:text-red-300 ml-2">{{ selectedActivity.deleted_info.email }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teknik Bilgiler -->
+                    <details class="border border-gray-200 dark:border-gray-600 rounded-lg">
+                        <summary class="cursor-pointer p-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            🔧 Teknik Bilgiler
+                        </summary>
+                        <div class="p-3 border-t border-gray-200 dark:border-gray-600 space-y-2">
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span class="text-gray-600 dark:text-gray-400">IP:</span>
+                                    <span class="text-gray-900 dark:text-white font-mono ml-2">{{ selectedActivity.ip_address || '-' }}</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600 dark:text-gray-400">Browser:</span>
+                                    <span class="text-gray-900 dark:text-white text-xs ml-2">{{ getBrowserName(selectedActivity.user_agent) }}</span>
+                                </div>
+                            </div>
+                            <details class="mt-2">
+                                <summary class="cursor-pointer text-xs text-gray-500 dark:text-gray-400">Raw Data</summary>
+                                <pre class="text-xs text-gray-600 dark:text-gray-400 mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded overflow-x-auto">{{ JSON.stringify(selectedActivity.properties, null, 2) }}</pre>
+                            </details>
+                        </div>
+                    </details>
                 </div>
 
-                <!-- Açıklama -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Açıklama</label>
-                    <p class="text-sm text-gray-900 dark:text-white">{{ selectedActivity.description }}</p>
-                </div>
-
-                <!-- Kaynak -->
-                <div v-if="selectedActivity.subject_type" class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kaynak Türü</label>
-                        <p class="text-sm text-gray-900 dark:text-white">{{ selectedActivity.model_name }}</p>
-                    </div>
-                    <div v-if="selectedActivity.subject_id">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kaynak ID</label>
-                        <p class="text-sm text-gray-900 dark:text-white font-mono">{{ selectedActivity.subject_id }}</p>
-                    </div>
-                </div>
-
-                <!-- Teknik Bilgiler -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">IP Adresi</label>
-                        <p class="text-sm text-gray-900 dark:text-white font-mono">{{ selectedActivity.ip_address || '-' }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">User Agent</label>
-                        <p class="text-xs text-gray-600 dark:text-gray-400 break-all">{{ selectedActivity.user_agent || '-' }}</p>
-                    </div>
-                </div>
-
-                <!-- Properties (Eğer varsa) -->
-                <div v-if="selectedActivity.properties && Object.keys(selectedActivity.properties).length > 0">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Ek Bilgiler</label>
-                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                        <pre class="text-xs text-gray-900 dark:text-white whitespace-pre-wrap">{{ JSON.stringify(selectedActivity.properties, null, 2) }}</pre>
-                    </div>
+                <!-- Footer -->
+                <div class="flex justify-end mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
+                    <button @click="showDetailModal = false" 
+                            class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors">
+                        Kapat
+                    </button>
                 </div>
             </div>
         </Modal>
@@ -414,5 +503,14 @@ const formatTime = (dateString) => {
         hour: '2-digit', 
         minute: '2-digit' 
     })
+}
+
+const getBrowserName = (userAgent) => {
+    if (!userAgent) return '-'
+    if (userAgent.includes('Chrome')) return 'Chrome'
+    if (userAgent.includes('Firefox')) return 'Firefox'
+    if (userAgent.includes('Safari')) return 'Safari'
+    if (userAgent.includes('Edge')) return 'Edge'
+    return 'Diğer'
 }
 </script> 

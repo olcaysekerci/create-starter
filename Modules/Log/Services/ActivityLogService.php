@@ -141,11 +141,4 @@ class ActivityLogService
             ->withProperties($properties)
             ->log($event);
     }
-
-    public function cleanupOldLogs(int $days = 30): int
-    {
-        $cutoffDate = now()->subDays($days);
-        
-        return Activity::where('created_at', '<', $cutoffDate)->delete();
-    }
 } 

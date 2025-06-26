@@ -15,7 +15,13 @@ class Activity extends SpatieActivity
         'model_name', 
         'formatted_description',
         'ip_address',
-        'user_agent'
+        'user_agent',
+        'has_changes',
+        'formatted_changes',
+        'is_password_change',
+        'is_email_change',
+        'is_admin_action',
+        'deleted_info'
     ];
 
     /**
@@ -92,5 +98,89 @@ class Activity extends SpatieActivity
     public function getUserAgentAttribute(): ?string
     {
         return $this->properties['user_agent'] ?? null;
+    }
+
+    public function getHasChangesAttribute(): bool
+    {
+        return isset($this->properties['changes']) && !empty($this->properties['changes']);
+    }
+
+    public function getFormattedChangesAttribute(): array
+    {
+        if (!$this->has_changes) {
+            return [];
+        }
+
+        $changes = $this->properties['changes'] ?? [];
+        $formatted = [];
+
+        foreach ($changes as $field => $change) {
+            $formatted[] = [
+                'field' => $field,
+                'field_name' => $change['field_name'] ?? ucfirst($field),
+                'old_value' => $change['old'] ?? 'Boş',
+                'new_value' => $change['new'] ?? 'Boş',
+                'is_important' => in_array($field, ['email', 'password', 'name']),
+            ];
+        }
+
+        return $formatted;
+    }
+
+    /**
+     * Özel durumlar için accessor'lar
+     */
+    public function getIsPasswordChangeAttribute(): bool
+    {
+        return isset($this->properties['password_changed']) && $this->properties['password_changed'];
+    }
+
+    public function getIsEmailChangeAttribute(): bool
+    {
+        return isset($this->properties['email_changed']) && $this->properties['email_changed'];
+    }
+
+    public function getIsAdminActionAttribute(): bool
+    {
+        return isset($this->properties['admin_action']) && $this->properties['admin_action'];
+    }
+
+    public function getOldValuesAttribute(): array
+    {
+        return $this->properties['old'] ?? [];
+    }
+
+    public function getNewValuesAttribute(): array
+    {
+        return $this->properties['attributes'] ?? [];
+    }
+
+    /**
+     * Silinen kayıt bilgileri
+     */
+    public function getDeletedInfoAttribute(): ?array
+    {
+        return $this->properties['deleted_user_info'] ?? null;
+    }
+
+    /**
+     * Değişiklik özeti
+     */
+    public function getChangeSummaryAttribute(): string
+    {
+        if (!$this->has_changes) {
+            return $this->description;
+        }
+
+        $changeCount = count($this->properties['changes'] ?? []);
+        $fields = array_keys($this->properties['changes'] ?? []);
+        
+        if ($changeCount === 1) {
+            $fieldName = $this->properties['changes'][$fields[0]]['field_name'] ?? $fields[0];
+            return "{$fieldName} alanını değiştirdi";
+        }
+
+        return "{$changeCount} alanı değiştirdi: " . implode(', ', array_slice($fields, 0, 3)) . 
+               ($changeCount > 3 ? ' ve diğerleri' : '');
     }
 } 
