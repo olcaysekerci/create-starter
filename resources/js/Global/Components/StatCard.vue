@@ -1,8 +1,8 @@
 <template>
-    <div class="group relative bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 transition-all duration-200 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600">
+    <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
         <!-- Background Gradient -->
         <div :class="[
-            'absolute inset-0 rounded-xl opacity-5 transition-opacity duration-200 group-hover:opacity-10',
+            'absolute inset-0 rounded-xl opacity-5',
             gradientBg
         ]"></div>
         
