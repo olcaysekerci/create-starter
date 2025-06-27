@@ -9,6 +9,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
         Route::get('/{id}', [MailNotificationController::class, 'show'])->name('show');
         Route::post('/test', [MailNotificationController::class, 'test'])->name('test');
         Route::post('/retry', [MailNotificationController::class, 'retry'])->name('retry');
+        Route::post('/retry/{id}', [MailNotificationController::class, 'retrySingle'])->name('retry-single');
         Route::post('/cleanup', [MailNotificationController::class, 'cleanup'])->name('cleanup');
     });
 }); 

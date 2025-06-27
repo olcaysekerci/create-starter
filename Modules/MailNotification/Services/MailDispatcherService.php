@@ -195,6 +195,32 @@ class MailDispatcherService
     }
 
     /**
+     * Tekil mail yeniden dene
+     */
+    public function retrySingleMail(MailLog $mailLog): bool
+    {
+        if (!$mailLog->canRetry()) {
+            return false;
+        }
+
+        $mailLog->incrementRetryCount();
+        
+        $mailData = [
+            'to' => $mailLog->recipient,
+            'subject' => $mailLog->subject,
+            'content' => $mailLog->content,
+            'type' => $mailLog->type,
+        ];
+
+        if ($this->sendMail($mailData)) {
+            $mailLog->markAsSent();
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Mail istatistikleri
      */
     public function getStats(): array

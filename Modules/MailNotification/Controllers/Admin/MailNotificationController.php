@@ -169,6 +169,34 @@ class MailNotificationController extends Controller
     }
 
     /**
+     * Tekil mail yeniden dene
+     */
+    public function retrySingle($id)
+    {
+        try {
+            $mailLog = MailLog::findOrFail($id);
+            
+            if ($mailLog->status !== MailStatus::FAILED) {
+                return back()->with('error', 'Bu mail başarısız değil.');
+            }
+
+            if (!$mailLog->canRetry()) {
+                return back()->with('error', 'Bu mail için maksimum deneme sayısına ulaşıldı.');
+            }
+
+            $sent = $this->mailDispatcher->retrySingleMail($mailLog);
+
+            if ($sent) {
+                return back()->with('success', 'Mail başarıyla yeniden gönderildi.');
+            } else {
+                return back()->with('error', 'Mail yeniden gönderilemedi.');
+            }
+        } catch (\Exception $e) {
+            return back()->with('error', 'Mail yeniden gönderimi sırasında hata oluştu: ' . $e->getMessage());
+        }
+    }
+
+    /**
      * Eski logları temizle
      */
     public function cleanup(Request $request)

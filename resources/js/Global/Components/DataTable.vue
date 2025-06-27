@@ -55,7 +55,7 @@
                         <slot name="actions" :item="item" :index="index">
                             <button v-for="action in actions" 
                                     :key="action.key"
-                                    @click="action.handler(item, index)"
+                                    @click="handleAction(action, item, index)"
                                     :class="[
                                         'mr-4 hover:underline',
                                         getActionClass(action.variant)
@@ -100,6 +100,8 @@ const props = defineProps({
     }
 })
 
+const emit = defineEmits(['action'])
+
 const hasActions = computed(() => {
     return props.actions.length > 0 || !!useSlots()['actions']
 })
@@ -134,6 +136,14 @@ const getActionClass = (variant = 'primary') => {
         success: 'text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300'
     }
     return variants[variant] || variants.primary
+}
+
+const handleAction = (action, item, index) => {
+    if (action.handler) {
+        action.handler(item, index)
+    } else {
+        emit('action', action.key, item, index)
+    }
 }
 
 // Import useSlots for checking if actions slot exists

@@ -41,30 +41,30 @@
         </PageHeader>
 
         <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <StatCard
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-6">
+            <StatItem
                 title="Toplam Mail"
                 :value="stats.total"
                 color="blue"
-                icon="ServerIcon"
+                :icon="ServerIcon"
             />
-            <StatCard
+            <StatItem
                 title="Gönderildi"
                 :value="stats.sent"
-                color="green"
-                icon="CheckIcon"
+                color="emerald"
+                :icon="CheckIcon"
             />
-            <StatCard
+            <StatItem
                 title="Başarısız"
                 :value="stats.failed"
                 color="red"
-                icon="WarningIcon"
+                :icon="WarningIcon"
             />
-            <StatCard
+            <StatItem
                 title="Bugün"
                 :value="stats.today"
                 color="purple"
-                icon="RefreshIcon"
+                :icon="RefreshIcon"
             />
         </div>
 
@@ -117,6 +117,7 @@
                 :columns="columns"
                 :actions="actions"
                 empty-message="Henüz mail logu bulunmuyor"
+                @action="handleTableAction"
             >
                 <!-- ID Column -->
                 <template #cell-id="{ value }">
@@ -142,8 +143,8 @@
 
                 <!-- Status Column -->
                 <template #cell-status="{ value, item }">
-                    <span :class="item.status_badge_class" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
-                        {{ item.status_label }}
+                    <span :class="getStatusBadgeClass(item.status)" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                        {{ getStatusLabel(item.status) }}
                     </span>
                 </template>
 
@@ -216,6 +217,13 @@
                 </form>
             </div>
         </Modal>
+
+        <!-- Mail Detail Modal -->
+        <MailDetailModal
+            :show="showDetailModal"
+            :mail-log="selectedMailLog"
+            @close="showDetailModal = false"
+        />
     </AdminLayout>
 </template>
 
@@ -225,7 +233,7 @@ import { router } from '@inertiajs/vue3'
 import { debounce } from 'lodash'
 import AdminLayout from '@/Global/Layouts/AdminLayout.vue'
 import PageHeader from '@/Global/Components/PageHeader.vue'
-import StatCard from '@/Global/Components/StatCard.vue'
+import StatItem from '@/Global/Components/StatItem.vue'
 import FilterCard from '@/Global/Components/FilterCard.vue'
 import DataTable from '@/Global/Components/DataTable.vue'
 import Pagination from '@/Global/Components/Pagination.vue'
@@ -235,6 +243,12 @@ import SearchInput from '@/Global/Components/SearchInput.vue'
 import FormGroup from '@/Global/Forms/FormGroup.vue'
 import TextInput from '@/Global/Forms/TextInput.vue'
 import FlashMessage from '@/Global/Components/FlashMessage.vue'
+import MailDetailModal from '@/Global/Components/MailDetailModal.vue'
+import ServerIcon from '@/Global/Icons/ServerIcon.vue'
+import CheckIcon from '@/Global/Icons/CheckIcon.vue'
+import WarningIcon from '@/Global/Icons/WarningIcon.vue'
+import RefreshIcon from '@/Global/Icons/RefreshIcon.vue'
+import MailIcon from '@/Global/Icons/MailIcon.vue'
 
 const props = defineProps({
     mailLogs: Object,
@@ -245,6 +259,8 @@ const props = defineProps({
 
 const showFilterModal = ref(false)
 const showTestModal = ref(false)
+const showDetailModal = ref(false)
+const selectedMailLog = ref(null)
 const searchQuery = ref(props.filters.search || '')
 const sendingTestMail = ref(false)
 
@@ -306,10 +322,7 @@ const actions = [
     {
         key: 'view',
         label: 'Görüntüle',
-        variant: 'primary',
-        handler: (item) => {
-            router.visit(route('admin.mail-notifications.show', item.id))
-        }
+        variant: 'info'
     }
 ]
 
@@ -390,4 +403,38 @@ const formatDate = (dateString) => {
         minute: '2-digit'
     })
 }
+
+// Status helpers
+const getStatusLabel = (status) => {
+    const labels = {
+        pending: 'Bekliyor',
+        sent: 'Gönderildi',
+        failed: 'Başarısız'
+    }
+    return labels[status] || status
+}
+
+const getStatusBadgeClass = (status) => {
+    const classes = {
+        pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
+        sent: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
+        failed: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+    }
+    return classes[status] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+}
+
+// Table action handler
+const handleTableAction = (actionKey, item) => {
+    if (actionKey === 'view') {
+        selectedMailLog.value = item
+        showDetailModal.value = true
+    }
+}
+
+// Initialize filters from props
+onMounted(() => {
+    if (props.filters) {
+        searchQuery.value = props.filters.search || ''
+    }
+})
 </script> 
