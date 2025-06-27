@@ -11,7 +11,8 @@
             ]"
         >
         <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-            <component :is="icon" class="h-4 w-4 text-gray-400 dark:text-gray-500" />
+            <SearchIcon v-if="!icon || icon === 'search'" class="h-4 w-4 text-gray-400 dark:text-gray-500" />
+            <component v-else :is="icon" class="h-4 w-4 text-gray-400 dark:text-gray-500" />
         </div>
         <div v-if="clearable && modelValue" 
              @click="$emit('update:modelValue', '')"
@@ -24,6 +25,8 @@
 </template>
 
 <script setup>
+import SearchIcon from '../Icons/SearchIcon.vue'
+
 const props = defineProps({
     modelValue: {
         type: [String, Number],
@@ -44,11 +47,7 @@ const props = defineProps({
     },
     icon: {
         type: [String, Object],
-        default: () => ({
-            template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>`
-        })
+        default: 'search'
     },
     clearable: {
         type: Boolean,

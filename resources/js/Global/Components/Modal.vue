@@ -10,7 +10,8 @@
         >
             <div v-show="show" class="fixed inset-0 overflow-y-auto z-50" scroll-region>
                 <!-- Background overlay -->
-                <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75" @click="$emit('close')"></div>
+                <div v-if="closeable" class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75" @click="$emit('close')"></div>
+                <div v-else class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75"></div>
                 
                 <!-- Modal content -->
                 <transition
@@ -25,6 +26,7 @@
                         <div class="relative bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-lg mx-auto max-h-[90vh] overflow-y-auto">
                             <!-- Close button for mobile -->
                             <button 
+                                v-if="closeable"
                                 @click="$emit('close')"
                                 class="absolute top-4 right-4 z-10 p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors sm:hidden"
                             >
@@ -47,6 +49,10 @@ defineProps({
     show: {
         type: Boolean,
         default: false
+    },
+    closeable: {
+        type: Boolean,
+        default: true
     }
 })
 
