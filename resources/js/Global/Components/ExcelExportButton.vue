@@ -105,7 +105,6 @@ const exportToExcel = async () => {
 
         emit('export-complete', fileName)
     } catch (error) {
-        console.error('Excel export error:', error)
         alert('Excel dosyası oluşturulurken bir hata oluştu.')
         emit('export-error', error)
     } finally {

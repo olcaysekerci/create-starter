@@ -141,21 +141,17 @@ const handleUserCreated = () => {
 }
 
 const handleEditUser = (user) => {
-    console.log('handleEditUser called:', user)
     // Navigate to edit user page
     router.visit(`/admin/users/${user.id}/edit`)
 }
 
 const handleDeleteUser = (user) => {
-    console.log('handleDeleteUser called:', user)
     // Delete user via Inertia
     router.delete(`/admin/users/${user.id}`, {
         onSuccess: () => {
             // User will be automatically removed from the list
-            console.log(`${user.name} kullanıcısı başarıyla silindi`)
         },
         onError: (errors) => {
-            console.error('Kullanıcı silinirken hata oluştu:', errors)
             alert('Kullanıcı silinirken bir hata oluştu. Lütfen tekrar deneyin.')
         }
     })

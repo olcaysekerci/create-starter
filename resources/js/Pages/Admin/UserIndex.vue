@@ -284,7 +284,6 @@ const handleFilterUpdate = ({ key, value }) => {
 
 const applyFilters = () => {
     // Filtreler artık real-time çalışıyor, bu metod boş kalabilir
-    console.log('Filters applied:', filters.value)
 }
 
 const clearFilters = () => {
@@ -297,17 +296,15 @@ const clearFilters = () => {
 }
 
 const handleExportComplete = (filename) => {
-    console.log('Excel export completed:', filename)
+    // Excel export completed
 }
 
 const handleEditUser = (user) => {
-    console.log('handleEditUser called:', user)
     // Navigate to edit user page
     router.visit(`/admin/users/${user.id}/edit`)
 }
 
 const handleDeleteUser = (user) => {
-    console.log('handleDeleteUser called:', user)
     userToDelete.value = user
     showDeleteModal.value = true
 }
@@ -336,7 +333,6 @@ const confirmDeleteUser = () => {
             // Flash message will be shown automatically from backend
         },
         onError: (errors) => {
-            console.error('Kullanıcı silinirken hata oluştu:', errors)
             deleteProcessing.value = false
             // Modal açık kalır, kullanıcı tekrar deneyebilir
         }

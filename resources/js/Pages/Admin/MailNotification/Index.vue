@@ -362,7 +362,7 @@ const sendTestMail = async () => {
                 testMailForm.value = { email: '', subject: 'Test Mail - ' + document.title }
             },
             onError: (errors) => {
-                console.error('Test mail gönderim hatası:', errors)
+                // Test mail gönderim hatası
             }
         })
     } finally {
