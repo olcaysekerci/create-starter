@@ -15,10 +15,23 @@ class MailDispatcherService
      */
     public function send(array $data): bool
     {
+        Log::info('MailDispatcherService::send başlatıldı', [
+            'input_data' => $data
+        ]);
+
         $mailData = $this->prepareMailData($data);
+        
+        Log::info('MailDispatcherService::send - hazırlanan veri', [
+            'prepared_data' => $mailData
+        ]);
         
         // Mail log kaydı oluştur
         $mailLog = $this->createMailLog($mailData);
+        
+        Log::info('MailDispatcherService::send - mail log oluşturuldu', [
+            'log_id' => $mailLog->id,
+            'recipient' => $mailLog->recipient
+        ]);
         
         try {
             // Mail gönder
@@ -58,14 +71,27 @@ class MailDispatcherService
      */
     public function sendTestMail(string $to, string $subject = 'Test Mail'): bool
     {
+        Log::info('MailDispatcherService::sendTestMail çağrıldı', [
+            'to' => $to,
+            'subject' => $subject
+        ]);
+
         $content = $this->getTestMailContent();
         
-        return $this->send([
+        $result = $this->send([
             'to' => $to,
             'subject' => $subject,
             'content' => $content,
             'type' => 'test'
         ]);
+
+        Log::info('MailDispatcherService::sendTestMail sonucu', [
+            'to' => $to,
+            'subject' => $subject,
+            'result' => $result
+        ]);
+
+        return $result;
     }
 
     /**
@@ -131,11 +157,9 @@ class MailDispatcherService
      */
     private function getTestMailContent(): string
     {
-        return "Bu bir test mailidir.\n\n" .
-               "Gönderim Tarihi: " . now()->format('d.m.Y H:i:s') . "\n" .
-               "IP Adresi: " . request()->ip() . "\n" .
-               "User Agent: " . request()->userAgent() . "\n\n" .
-               "Mail sistemi başarıyla çalışıyor!";
+        return "Merhaba,\n\n" .
+               "Mail sistemi başarıyla çalışıyor. Bu mail, sistem ayarlarınızın doğru yapılandırıldığını onaylar.\n\n" .
+               "Teknik Destek Ekibi\n" . config('app.name');
     }
 
     /**

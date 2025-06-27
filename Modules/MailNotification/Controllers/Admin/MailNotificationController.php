@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Modules\MailNotification\Models\MailLog;
 use Modules\MailNotification\Services\MailDispatcherService;
 use Modules\MailNotification\Enums\MailStatus;
+use Illuminate\Support\Facades\Log;
 
 class MailNotificationController extends Controller
 {
@@ -116,15 +117,35 @@ class MailNotificationController extends Controller
         $email = $request->email;
         $subject = $request->subject ?? 'Test Mail - ' . config('app.name');
 
+        // Debug log ekle
+        Log::info('Test mail gönderimi başlatıldı', [
+            'requested_email' => $email,
+            'requested_subject' => $subject,
+            'request_data' => $request->all()
+        ]);
+
         try {
             $sent = $this->mailDispatcher->sendTestMail($email, $subject);
 
             if ($sent) {
+                Log::info('Test mail başarıyla gönderildi', [
+                    'email' => $email,
+                    'subject' => $subject
+                ]);
                 return back()->with('success', 'Test mail başarıyla gönderildi!');
             } else {
+                Log::error('Test mail gönderilemedi', [
+                    'email' => $email,
+                    'subject' => $subject
+                ]);
                 return back()->with('error', 'Test mail gönderilemedi. Lütfen mail ayarlarını kontrol edin.');
             }
         } catch (\Exception $e) {
+            Log::error('Test mail gönderim hatası', [
+                'email' => $email,
+                'subject' => $subject,
+                'error' => $e->getMessage()
+            ]);
             return back()->with('error', 'Test mail gönderilirken hata oluştu: ' . $e->getMessage());
         }
     }
