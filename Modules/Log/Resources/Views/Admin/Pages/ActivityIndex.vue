@@ -37,11 +37,6 @@
                         {{ activeFilterCount }}
                     </span>
                 </Button>
-                <ExcelExportButton 
-                    :url="route('admin.logs.export', current_filters)"
-                    filename="aktivite-loglari"
-                    title="Excel İndir"
-                />
             </template>
         </PageHeader>
 
@@ -100,9 +95,10 @@
                         />
                         <!-- Excel Export -->
                         <ExcelExportButton 
-                            :url="route('admin.logs.export', { ...current_filters, search: searchQuery })"
+                            :data="filteredActivities"
+                            :columns="columns"
                             filename="aktivite-loglari"
-                            title="Excel İndir"
+                            title="Excel"
                         />
                     </div>
                 </div>
