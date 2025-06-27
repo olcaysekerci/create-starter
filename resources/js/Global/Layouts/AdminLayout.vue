@@ -66,6 +66,18 @@
                     </svg>
                     <span v-if="!sidebarCollapsed || isMobile" class="ml-3">Aktivite Logları</span>
                 </Link>
+
+                <!-- Mail Notifications -->
+                <Link 
+                    :href="route('admin.mail-notifications.index')" 
+                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors group"
+                    :class="{ 'justify-center': sidebarCollapsed && !isMobile }"
+                >
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    <span v-if="!sidebarCollapsed || isMobile" class="ml-3">Mail Bildirimleri</span>
+                </Link>
             </nav>
         </div>
 
